@@ -43,7 +43,11 @@ export default async function PromptsPage({
       </div>
 
       <form className="mt-6" method="get">
+        <label htmlFor="q" className="sr-only">
+          Search prompts
+        </label>
         <input
+          id="q"
           type="text"
           name="q"
           defaultValue={q}
@@ -54,7 +58,7 @@ export default async function PromptsPage({
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {prompts.length === 0 && (
-          <p className="text-sm text-neutral-500">No prompts found.</p>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">No prompts found.</p>
         )}
         {prompts.map((p) => (
           <Link
@@ -71,9 +75,9 @@ export default async function PromptsPage({
               )}
             </div>
             {p.description && (
-              <p className="mt-1 text-sm text-neutral-500 line-clamp-2">{p.description}</p>
+              <p className="mt-1 text-sm text-neutral-500 line-clamp-2 dark:text-neutral-400">{p.description}</p>
             )}
-            <p className="mt-2 text-xs text-neutral-400">by {p.author.name ?? "Anonymous"}</p>
+            <p className="mt-2 text-xs text-neutral-500 dark:text-neutral-400">by {p.author.name ?? "Anonymous"}</p>
           </Link>
         ))}
       </div>

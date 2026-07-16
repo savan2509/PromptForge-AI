@@ -55,7 +55,7 @@ export default async function PromptDetailPage({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
           <h1 className="text-2xl font-semibold tracking-tight break-words">{prompt.title}</h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
             by {prompt.author.name ?? "Anonymous"}
             {prompt.targetModel ? ` · for ${prompt.targetModel}` : ""}
           </p>
@@ -72,7 +72,7 @@ export default async function PromptDetailPage({
       )}
 
       <div className="mt-6 flex items-center justify-between">
-        <h2 className="text-sm font-medium text-neutral-500">Prompt</h2>
+        <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400">Prompt</h2>
         <CopyButton text={prompt.content} />
       </div>
       <pre className="mt-2 whitespace-pre-wrap break-words rounded-lg border border-black/10 bg-neutral-50 p-4 text-sm dark:border-white/10 dark:bg-neutral-900">

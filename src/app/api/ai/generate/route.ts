@@ -15,7 +15,10 @@ export async function POST(req: Request) {
 
   const parsed = schema.safeParse(await req.json());
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: parsed.error.issues.map((i) => i.message).join(", ") },
+      { status: 400 }
+    );
   }
   const { topic, targetModel } = parsed.data;
 

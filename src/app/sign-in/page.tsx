@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
 import { pageMetadata } from "@/lib/seo";
+import { SubmitButton } from "@/components/submit-button";
 
 export const metadata = pageMetadata({
   title: "Sign in",
@@ -42,26 +43,34 @@ export default async function SignInPage({
           }
         }}
       >
+        <label htmlFor="email" className="sr-only">
+          Email
+        </label>
         <input
+          id="email"
           name="email"
           type="email"
           placeholder="Email"
           required
           className="rounded-md border border-black/10 px-3 py-2 dark:border-white/20 dark:bg-transparent"
         />
+        <label htmlFor="password" className="sr-only">
+          Password
+        </label>
         <input
+          id="password"
           name="password"
           type="password"
           placeholder="Password"
           required
           className="rounded-md border border-black/10 px-3 py-2 dark:border-white/20 dark:bg-transparent"
         />
-        <button
-          type="submit"
-          className="rounded-md bg-neutral-900 px-4 py-2 text-white dark:bg-white dark:text-neutral-900"
+        <SubmitButton
+          pendingText="Signing in..."
+          className="rounded-md bg-neutral-900 px-4 py-2 text-white disabled:opacity-50 dark:bg-white dark:text-neutral-900"
         >
           Sign in
-        </button>
+        </SubmitButton>
       </form>
       <form
         className="mt-4"

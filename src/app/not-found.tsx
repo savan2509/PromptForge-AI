@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <div className="mx-auto max-w-xl px-4 py-24 text-center sm:px-6">
       <h1 className="text-3xl font-semibold tracking-tight">Page not found</h1>
-      <p className="mt-4 text-neutral-500">
+      <p className="mt-4 text-neutral-500 dark:text-neutral-400">
         The page you&apos;re looking for doesn&apos;t exist or may have been moved.
       </p>
       <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row sm:gap-4">

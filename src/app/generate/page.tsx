@@ -59,7 +59,7 @@ export default function GeneratePage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <h1 className="text-2xl font-semibold tracking-tight">Prompt Generator</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
         Generate a new prompt, improve one you already have, or optimize it for a specific model.
       </p>
 
@@ -72,7 +72,7 @@ export default function GeneratePage() {
               setOutput(null);
               setError(null);
             }}
-            className={`rounded-md px-3 py-1.5 text-sm ${
+            className={`min-h-11 rounded-md px-3 py-2 text-sm ${
               mode === m.key
                 ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
                 : "border border-black/10 dark:border-white/20"
@@ -129,7 +129,7 @@ export default function GeneratePage() {
       {output && (
         <div className="mt-8">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-medium text-neutral-500">Result</h2>
+            <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400">Result</h2>
             <CopyButton text={output} />
           </div>
           <pre className="mt-2 whitespace-pre-wrap break-words rounded-lg border border-black/10 bg-neutral-50 p-4 text-sm dark:border-white/10 dark:bg-neutral-900">

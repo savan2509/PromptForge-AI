@@ -11,38 +11,53 @@ const updateSchema = z.object({
   isPublic: z.boolean().optional(),
 });
 
-async function requireOwner(id: string) {
+async function requireUserId() {
   const session = await auth();
-  if (!session?.user) return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
-
-  const prompt = await prisma.prompt.findUnique({ where: { id } });
-  if (!prompt) return { error: NextResponse.json({ error: "Not found" }, { status: 404 }) };
-  if (prompt.authorId !== session.user.id) {
-    return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
+  if (!session?.user) {
+    return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) } as const;
   }
-  return { prompt };
+  return { userId: session.user.id } as const;
 }
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { error } = await requireOwner(id);
-  if (error) return error;
+  const authResult = await requireUserId();
+  if ("error" in authResult) return authResult.error;
 
   const body = await req.json();
   const parsed = updateSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: parsed.error.issues.map((i) => i.message).join(", ") },
+      { status: 400 }
+    );
   }
 
-  const updated = await prisma.prompt.update({ where: { id }, data: parsed.data });
+  // updateMany filters on id + authorId atomically, so ownership is checked
+  // and enforced in the same operation — no separate read-then-write race.
+  const { count } = await prisma.prompt.updateMany({
+    where: { id, authorId: authResult.userId },
+    data: parsed.data,
+  });
+  if (count === 0) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  const updated = await prisma.prompt.findUnique({ where: { id } });
   return NextResponse.json(updated);
 }
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { error } = await requireOwner(id);
-  if (error) return error;
+  const authResult = await requireUserId();
+  if ("error" in authResult) return authResult.error;
 
-  await prisma.prompt.delete({ where: { id } });
+  const { count } = await prisma.prompt.deleteMany({
+    where: { id, authorId: authResult.userId },
+  });
+  if (count === 0) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   return NextResponse.json({ ok: true });
 }

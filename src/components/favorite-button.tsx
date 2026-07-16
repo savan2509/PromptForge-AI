@@ -33,7 +33,7 @@ export function FavoriteButton({
     <button
       onClick={toggle}
       disabled={loading}
-      className="rounded-md border border-black/10 px-3 py-1.5 text-sm disabled:opacity-50 dark:border-white/20"
+      className="min-h-11 rounded-md border border-black/10 px-3 py-2 text-sm disabled:opacity-50 dark:border-white/20"
     >
       {favorited ? "★ Favorited" : "☆ Favorite"}
     </button>

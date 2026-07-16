@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -45,29 +46,40 @@ export async function POST(req: Request) {
   const body = await req.json();
   const parsed = createSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: parsed.error.issues.map((i) => i.message).join(", ") },
+      { status: 400 }
+    );
   }
 
   const { title, description, content, targetModel, isPublic } = parsed.data;
-
   const baseSlug = slugify(title) || "prompt";
+
   let slug = baseSlug;
   let suffix = 1;
-  while (await prisma.prompt.findUnique({ where: { slug } })) {
-    slug = `${baseSlug}-${suffix++}`;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      const prompt = await prisma.prompt.create({
+        data: {
+          title,
+          description,
+          content,
+          targetModel,
+          isPublic: isPublic ?? false,
+          slug,
+          authorId: session.user.id,
+        },
+      });
+      return NextResponse.json(prompt, { status: 201 });
+    } catch (err) {
+      const isSlugConflict =
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === "P2002" &&
+        (err.meta?.target as string[] | undefined)?.includes("slug");
+      if (!isSlugConflict) throw err;
+      slug = `${baseSlug}-${suffix++}`;
+    }
   }
 
-  const prompt = await prisma.prompt.create({
-    data: {
-      title,
-      description,
-      content,
-      targetModel,
-      isPublic: isPublic ?? false,
-      slug,
-      authorId: session.user.id,
-    },
-  });
-
-  return NextResponse.json(prompt, { status: 201 });
+  return NextResponse.json({ error: "Could not generate a unique slug" }, { status: 500 });
 }

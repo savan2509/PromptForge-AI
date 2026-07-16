@@ -5,9 +5,14 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
+// Precomputed so a nonexistent-user login still pays the same bcrypt cost as
+// a real one — otherwise response time leaks whether an account exists.
+const DUMMY_PASSWORD_HASH = bcrypt.hashSync("not-a-real-password", 10);
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
+  trustHost: true,
   pages: {
     signIn: "/sign-in",
   },
@@ -27,10 +32,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!email || !password) return null;
 
         const user = await prisma.user.findUnique({ where: { email } });
-        if (!user?.password) return null;
-
-        const valid = await bcrypt.compare(password, user.password);
-        if (!valid) return null;
+        const valid = await bcrypt.compare(password, user?.password ?? DUMMY_PASSWORD_HASH);
+        if (!user?.password || !valid) return null;
 
         return { id: user.id, name: user.name, email: user.email, image: user.image };
       },

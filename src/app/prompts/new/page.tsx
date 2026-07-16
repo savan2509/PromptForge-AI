@@ -54,27 +54,43 @@ export default function NewPromptPage() {
         </p>
       )}
       <form className="mt-6 flex flex-col gap-4" onSubmit={handleSubmit}>
+        <label htmlFor="title" className="sr-only">
+          Title
+        </label>
         <input
+          id="title"
           name="title"
           type="text"
           placeholder="Title"
           required
           className="rounded-md border border-black/10 px-3 py-2 dark:border-white/20 dark:bg-transparent"
         />
+        <label htmlFor="description" className="sr-only">
+          Description
+        </label>
         <input
+          id="description"
           name="description"
           type="text"
           placeholder="Short description (optional)"
           className="rounded-md border border-black/10 px-3 py-2 dark:border-white/20 dark:bg-transparent"
         />
+        <label htmlFor="content" className="sr-only">
+          Prompt content
+        </label>
         <textarea
+          id="content"
           name="content"
           placeholder="Prompt content"
           required
           rows={10}
           className="rounded-md border border-black/10 px-3 py-2 font-mono text-sm dark:border-white/20 dark:bg-transparent"
         />
+        <label htmlFor="targetModel" className="sr-only">
+          Target model
+        </label>
         <select
+          id="targetModel"
           name="targetModel"
           className="rounded-md border border-black/10 px-3 py-2 dark:border-white/20 dark:bg-transparent"
         >

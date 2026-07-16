@@ -6,6 +6,7 @@ export const metadata = pageMetadata({
   description:
     "A prompt engineering workspace to generate, improve, and optimize prompts for ChatGPT, Gemini, Claude, and more.",
   path: "/",
+  absoluteTitle: true,
 });
 
 export default function Home() {
@@ -14,7 +15,7 @@ export default function Home() {
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
         Build, improve, and optimize AI prompts
       </h1>
-      <p className="mx-auto mt-4 max-w-2xl text-neutral-500">
+      <p className="mx-auto mt-4 max-w-2xl text-neutral-500 dark:text-neutral-400">
         PromptForge AI is a workspace for prompt engineers — generate new prompts,
         improve existing ones, and optimize them for ChatGPT, Gemini, Claude, and more.
       </p>

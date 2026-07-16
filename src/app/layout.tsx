@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { NavBar } from "@/components/nav-bar";
-import { Providers } from "@/components/providers";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,12 +50,15 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <Providers>
-          <NavBar />
-          <main className="flex-1">{children}</main>
-        </Providers>
+        {/* Raw script (not next/script) as the first body child, so it runs
+            synchronously as the parser reaches it — before first paint,
+            before hydration, and before any content below it renders. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <NavBar />
+        <main className="flex-1">{children}</main>
       </body>
     </html>
   );

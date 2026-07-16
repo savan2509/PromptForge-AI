@@ -12,6 +12,7 @@ export default async function BlogPage() {
   const posts = await prisma.blogPost.findMany({
     where: { published: true },
     orderBy: { publishedAt: "desc" },
+    take: 50,
   });
 
   return (
@@ -19,13 +20,13 @@ export default async function BlogPage() {
       <h1 className="text-2xl font-semibold tracking-tight">Blog</h1>
       <div className="mt-8 flex flex-col gap-6">
         {posts.length === 0 && (
-          <p className="text-sm text-neutral-500">No posts yet. Check back soon.</p>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">No posts yet. Check back soon.</p>
         )}
         {posts.map((post) => (
           <Link key={post.id} href={`/blog/${post.slug}`} className="block">
             <h2 className="text-lg font-medium hover:underline">{post.title}</h2>
             {post.excerpt && (
-              <p className="mt-1 text-sm text-neutral-500">{post.excerpt}</p>
+              <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{post.excerpt}</p>
             )}
           </Link>
         ))}

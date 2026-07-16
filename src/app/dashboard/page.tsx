@@ -33,11 +33,11 @@ export default async function DashboardPage() {
 
       <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
         <div className="rounded-lg border border-black/10 p-4 dark:border-white/10">
-          <p className="text-sm text-neutral-500">Your prompts</p>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">Your prompts</p>
           <p className="text-2xl font-semibold">{promptCount}</p>
         </div>
         <div className="rounded-lg border border-black/10 p-4 dark:border-white/10">
-          <p className="text-sm text-neutral-500">Favorites</p>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">Favorites</p>
           <p className="text-2xl font-semibold">{favoriteCount}</p>
         </div>
       </div>
@@ -49,20 +49,21 @@ export default async function DashboardPage() {
         </Link>
       </div>
 
-      <ul className="mt-4 divide-y divide-black/5 dark:divide-white/10">
-        {recentPrompts.length === 0 && (
-          <p className="py-4 text-sm text-neutral-500">
-            You haven&apos;t created any prompts yet.
-          </p>
-        )}
-        {recentPrompts.map((p) => (
-          <li key={p.id} className="py-3">
-            <Link href={`/prompts/${p.slug}`} className="font-medium break-words hover:underline">
-              {p.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {recentPrompts.length === 0 ? (
+        <p className="py-4 text-sm text-neutral-500 dark:text-neutral-400">
+          You haven&apos;t created any prompts yet.
+        </p>
+      ) : (
+        <ul className="mt-4 divide-y divide-black/5 dark:divide-white/10">
+          {recentPrompts.map((p) => (
+            <li key={p.id} className="py-3">
+              <Link href={`/prompts/${p.slug}`} className="font-medium break-words hover:underline">
+                {p.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

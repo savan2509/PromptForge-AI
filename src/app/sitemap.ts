@@ -45,8 +45,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.5,
     }));
-  } catch {
-    // Database unreachable — still serve the static routes rather than 500.
+  } catch (err) {
+    // Still serve the static routes rather than 500, but log so a real DB
+    // outage (vs. "not provisioned yet") doesn't silently deindex content.
+    console.error("sitemap: failed to load DB-backed routes", err);
   }
 
   return [...staticRoutes, ...promptRoutes, ...blogRoutes];

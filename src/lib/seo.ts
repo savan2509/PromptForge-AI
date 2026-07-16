@@ -9,17 +9,20 @@ export function pageMetadata({
   path,
   type = "website",
   noindex = false,
+  absoluteTitle = false,
 }: {
   title: string;
   description: string;
   path: string;
   type?: "website" | "article";
   noindex?: boolean;
+  /** Set true when `title` already includes the site name, to skip the root layout's "%s — SITE_NAME" template. */
+  absoluteTitle?: boolean;
 }): Metadata {
   const url = new URL(path, SITE_URL).toString();
 
   return {
-    title,
+    title: absoluteTitle ? { absolute: title } : title,
     description,
     alternates: { canonical: url },
     robots: noindex
