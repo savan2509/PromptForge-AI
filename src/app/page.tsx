@@ -1,4 +1,12 @@
 import Link from "next/link";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata = pageMetadata({
+  title: "PromptForge AI — Build, Improve & Optimize AI Prompts",
+  description:
+    "A prompt engineering workspace to generate, improve, and optimize prompts for ChatGPT, Gemini, Claude, and more.",
+  path: "/",
+});
 
 export default function Home() {
   return (

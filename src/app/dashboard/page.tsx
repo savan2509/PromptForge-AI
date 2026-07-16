@@ -2,6 +2,14 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata = pageMetadata({
+  title: "Dashboard",
+  description: "Your PromptForge AI dashboard.",
+  path: "/dashboard",
+  noindex: true,
+});
 
 export default async function DashboardPage() {
   const session = await auth();

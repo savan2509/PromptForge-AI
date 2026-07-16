@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { FavoriteButton } from "@/components/favorite-button";
 import { CopyButton } from "@/components/copy-button";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
 async function getPrompt(slug: string) {
   return prisma.prompt.findUnique({
@@ -19,11 +20,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const prompt = await getPrompt(slug);
-  if (!prompt) return {};
-  return {
+  if (!prompt) return { title: "Prompt not found", robots: { index: false, follow: false } };
+
+  return pageMetadata({
     title: prompt.title,
-    description: prompt.description ?? undefined,
-  };
+    description: prompt.description ?? `A prompt for ${prompt.targetModel ?? "AI"} on PromptForge AI.`,
+    path: `/prompts/${prompt.slug}`,
+    noindex: !prompt.isPublic,
+  });
 }
 
 export default async function PromptDetailPage({

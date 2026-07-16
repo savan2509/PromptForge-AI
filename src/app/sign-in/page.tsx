@@ -1,6 +1,14 @@
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata = pageMetadata({
+  title: "Sign in",
+  description: "Sign in to your PromptForge AI account.",
+  path: "/sign-in",
+  noindex: true,
+});
 
 export default async function SignInPage({
   searchParams,

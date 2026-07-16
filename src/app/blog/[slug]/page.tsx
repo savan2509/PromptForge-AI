@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
 async function getPost(slug: string) {
   return prisma.blogPost.findUnique({ where: { slug } });
@@ -13,8 +14,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) return {};
-  return { title: post.title, description: post.excerpt ?? undefined };
+  if (!post || !post.published) {
+    return { title: "Post not found", robots: { index: false, follow: false } };
+  }
+
+  return pageMetadata({
+    title: post.title,
+    description: post.excerpt ?? `${post.title} — PromptForge AI blog.`,
+    path: `/blog/${post.slug}`,
+    type: "article",
+  });
 }
 
 export default async function BlogPostPage({

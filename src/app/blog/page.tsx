@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Blog" };
+export const metadata = pageMetadata({
+  title: "Blog",
+  description: "Prompt engineering tips, guides, and updates from PromptForge AI.",
+  path: "/blog",
+});
 
 export default async function BlogPage() {
   const posts = await prisma.blogPost.findMany({

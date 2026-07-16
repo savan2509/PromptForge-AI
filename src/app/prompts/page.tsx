@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata = pageMetadata({
+  title: "Prompt Library",
+  description:
+    "Browse public, ready-to-use prompts for ChatGPT, Gemini, Claude, Midjourney, and more.",
+  path: "/prompts",
+});
 
 export default async function PromptsPage({
   searchParams,
