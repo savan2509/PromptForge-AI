@@ -43,6 +43,19 @@ Next.js (App Router) · TypeScript · Tailwind CSS · Prisma · PostgreSQL (Supa
 - `src/app/generate` — AI prompt generator UI
 - `src/app/api` — route handlers for prompts, favorites, auth, and AI actions
 
+## Writing blog posts
+
+`BlogPost.content` is Markdown, rendered via `src/components/markdown-content.tsx`. Links resolve
+automatically: same-origin/relative links render as `next/link` (internal navigation), everything
+else opens in a new tab with `rel="noopener noreferrer"` — external links are deliberately **not**
+`nofollow`, since citing authoritative sources is a trust signal, not something to suppress.
+
+Keep total links per ~800-word post to **5–6**: 2 external (authoritative sources), 1 feature/product
+page, 1 case study if one exists, and **1–2 blog-to-blog links max** — pick the single most relevant
+related post rather than linking every tangentially related one. More than that reads as templated
+"related posts" cross-linking rather than an editorial choice, dilutes internal link equity, and
+fragments reader attention.
+
 ## Deploy
 
 Deploy on [Vercel](https://vercel.com/new). Set the same environment variables there, then run `npx prisma db push` (or set up `prisma migrate deploy` in your build step) against the production database.

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { NavBar } from "@/components/nav-bar";
+import { Footer } from "@/components/footer";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
 
@@ -59,6 +60,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <NavBar />
         <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );

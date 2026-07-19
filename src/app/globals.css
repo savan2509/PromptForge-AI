@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* Drives every `dark:` utility off the `.dark` class on <html> (set by the
    theme-init script) instead of prefers-color-scheme, so a manual toggle and
